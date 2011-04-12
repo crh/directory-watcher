@@ -1,0 +1,38 @@
+INBOX
+    find out how to monitor file tree
+        WatchService: monitor file tree only supported in Windows[1]
+    see for architechture:https://fascinator.usq.edu.au/trac/wiki/Watcher 
+watcher
+    stand-alone
+    daemon
+
+listen to fs event
+    if missed,
+        rescan watched dir
+        compare with previous state
+
+    put event into a queue/FIFO
+        let subscriber process the event one by one
+        parallel processing?
+    filter event
+        create new file => CREATE and THEN MODIFY => CREATE
+        other cases
+
+depositor
+    one of the subscriber
+    got notified
+        get message
+            contains: (fullpath, event.kind, dateTime?,size?)
+        if message.size <= SIZE.MAXSIZE
+            read file
+            store temporary
+            encrypt it
+            compress it
+            AND THEN
+                create metadata encryption[2] use, compression used, md5
+                forward using streaming to target/backend
+
+References:
+
+[1] http://java.dzone.com/news/how-watch-file-system-changes  
+[2] http://www.bouncycastle.org/ 
