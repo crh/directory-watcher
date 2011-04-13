@@ -6,25 +6,30 @@ import java.nio.file.WatchEvent.Kind;
 public class FileEventImpl implements FileEvent {
 
     private final Kind<?> kind;
+
     private final Path resolved;
 
     public FileEventImpl(Kind<?> kind, Path resolve) {
-	this.kind = kind;
-	this.resolved = resolve;
+        this.kind = kind;
+        this.resolved = resolve;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.escidoc.watcher.FileEvent#getKind()
      */
     public Kind<?> getKind() {
-	return kind;
+        return kind;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.escidoc.watcher.FileEvent#getFullPath()
      */
     public Path getFullPath() {
-	return resolved;
+        return resolved;
     }
 
 }

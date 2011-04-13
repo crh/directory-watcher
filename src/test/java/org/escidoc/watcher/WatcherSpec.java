@@ -7,29 +7,30 @@ import org.junit.Test;
 
 public class WatcherSpec {
 
-    private static final String TO_MONITOR = "/home/chh/projects/personal/directory-watcher/sync-me";
+    private static final String TO_MONITOR =
+        "/home/chh/projects/personal/directory-watcher/sync-me";
 
     @Test
     public void whenTheUserCreateAFileFileCreatedEventShouldBeFired()
-	    throws Exception {
+        throws Exception {
 
-	Watcher service = new WatcherImpl();
+        Watcher service = new WatcherImpl();
 
-	Directory dir = new DirectoryImpl(new File(TO_MONITOR));
-	service.watch(dir);
+        Directory dir = new DirectoryImpl(new File(TO_MONITOR));
+        service.watch(dir);
 
-	service.start();
+        service.start();
 
-	Subscriber boss = new SubscriberImpl();
-	service.setSubscriber(boss);
+        Subscriber boss = new SubscriberImpl();
+        service.setSubscriber(boss);
 
-	createFileInSycMe(dir);
+        createFileInSycMe(dir);
 
-	// wait for max 10 seconds
+        // wait for max 10 seconds
     }
 
     private void createFileInSycMe(Directory dir) throws IOException {
-	File.createTempFile("foo", "txt", dir.getFile());
+        File.createTempFile("foo", "txt", dir.getFile());
     }
 
     @Test
