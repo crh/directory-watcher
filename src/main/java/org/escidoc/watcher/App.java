@@ -18,13 +18,27 @@ public class App {
 
     private static final String TO_MONITOR = "./sync-me";
 
-    private static Path path = Paths.get(TO_MONITOR);
+    private static Path path;
 
-    public static void main(final String[] args) throws Exception {
-        final WatchService service = init();
-        for (;;) {
-            usingPull(service);
+    public static void main(final String... args) throws Exception {
+        if (args.length == 0) {
+            useDefaultPath();
         }
+        else if (args.length > 1) {
+            LOG.error("One by one, Master...");
+        }
+        else {
+            path = Paths.get(args[0]);
+            final WatchService service = init();
+            for (;;) {
+                usingPull(service);
+            }
+        }
+
+    }
+
+    private static void useDefaultPath() {
+        path = Paths.get(TO_MONITOR);
     }
 
     private static WatchService init() throws IOException {
@@ -57,13 +71,11 @@ public class App {
 
     private static void processEvent(final WatchKey key) {
         for (final WatchEvent<?> watchEvent : key.pollEvents()) {
-            if (watchEvent.kind() instanceof Path) {
-                final String name = watchEvent.kind().name();
-                final Class<?> type = watchEvent.kind().type();
-                final Path context = (Path) watchEvent.context();
-                LOG.info("event kind: " + name + " context: "
-                    + path.resolve(context));
-            }
+            final String name = watchEvent.kind().name();
+            final Class<?> type = watchEvent.kind().type();
+            final Path context = (Path) watchEvent.context();
+            final Path resolvedPath = path.resolve(context);
+            LOG.info("event kind: " + name + " context: " + resolvedPath);
         }
     }
 
