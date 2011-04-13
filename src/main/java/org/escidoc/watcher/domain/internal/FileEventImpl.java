@@ -1,7 +1,9 @@
-package org.escidoc.watcher;
+package org.escidoc.watcher.domain.internal;
 
 import java.nio.file.Path;
 import java.nio.file.WatchEvent.Kind;
+
+import org.escidoc.watcher.domain.FileEvent;
 
 public class FileEventImpl implements FileEvent {
 

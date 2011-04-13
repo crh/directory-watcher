@@ -14,6 +14,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.escidoc.watcher.domain.FileEvent;
+import org.escidoc.watcher.domain.internal.FileEventImpl;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,6 +3,12 @@ package org.escidoc.watcher;
 import java.io.File;
 import java.io.IOException;
 
+import org.escidoc.watcher.domain.Directory;
+import org.escidoc.watcher.domain.Subscriber;
+import org.escidoc.watcher.domain.Watcher;
+import org.escidoc.watcher.domain.internal.DirectoryImpl;
+import org.escidoc.watcher.domain.internal.SubscriberImpl;
+import org.escidoc.watcher.domain.internal.WatcherImpl;
 import org.junit.Test;
 
 public class WatcherSpec {

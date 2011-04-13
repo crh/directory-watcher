@@ -1,6 +1,8 @@
-package org.escidoc.watcher;
+package org.escidoc.watcher.domain.internal;
 
 import java.io.File;
+
+import org.escidoc.watcher.domain.Directory;
 
 public class DirectoryImpl implements Directory {
 

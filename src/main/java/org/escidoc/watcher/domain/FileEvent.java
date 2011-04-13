@@ -1,4 +1,4 @@
-package org.escidoc.watcher;
+package org.escidoc.watcher.domain;
 
 import java.nio.file.Path;
 import java.nio.file.WatchEvent.Kind;

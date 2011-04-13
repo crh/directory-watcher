@@ -1,4 +1,8 @@
-package org.escidoc.watcher;
+package org.escidoc.watcher.domain.internal;
+
+import org.escidoc.watcher.domain.Directory;
+import org.escidoc.watcher.domain.Subscriber;
+import org.escidoc.watcher.domain.Watcher;
 
 public class WatcherImpl implements Watcher {
 
