@@ -21,18 +21,19 @@ public class App {
     private static Path path;
 
     public static void main(final String... args) throws Exception {
-	if (args.length == 0) {
+	switch (args.length) {
+	case 0:
 	    useDefaultPath();
-	} else if (args.length > 1) {
-	    LOG.error("One by one, Master...");
-	} else {
+	    break;
+	case 1:
 	    path = Paths.get(args[0]);
 	    final WatchService service = init();
 	    for (;;) {
 		usingPull(service);
 	    }
+	default:
+	    LOG.error("One by one, Master...");
 	}
-
     }
 
     private static void useDefaultPath() {
