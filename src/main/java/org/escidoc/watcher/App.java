@@ -9,6 +9,8 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 
+import org.escidoc.watcher.domain.FileEvent;
+import org.escidoc.watcher.domain.internal.FileEventImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,7 @@ public class App {
 
     private static final String TO_MONITOR = "./sync-me";
 
-    private static Path path;
+    private static Path monitoredPath;
 
     public static void main(final String... args) throws Exception {
 	switch (args.length) {
@@ -26,7 +28,7 @@ public class App {
 	    useDefaultPath();
 	    break;
 	case 1:
-	    path = Paths.get(args[0]);
+	    monitoredPath = Paths.get(args[0]);
 	    final WatchService service = init();
 	    for (;;) {
 		usingPull(service);
@@ -37,12 +39,12 @@ public class App {
     }
 
     private static void useDefaultPath() {
-	path = Paths.get(TO_MONITOR);
+	monitoredPath = Paths.get(TO_MONITOR);
     }
 
     private static WatchService init() throws IOException {
 	final WatchService service = FileSystems.getDefault().newWatchService();
-	path.register(service, StandardWatchEventKind.ENTRY_CREATE,
+	monitoredPath.register(service, StandardWatchEventKind.ENTRY_CREATE,
 		StandardWatchEventKind.ENTRY_DELETE,
 		StandardWatchEventKind.ENTRY_MODIFY,
 		StandardWatchEventKind.OVERFLOW);
@@ -69,11 +71,8 @@ public class App {
 
     private static void processEvent(final WatchKey key) {
 	for (final WatchEvent<?> watchEvent : key.pollEvents()) {
-	    final String name = watchEvent.kind().name();
-	    final Class<?> type = watchEvent.kind().type();
-	    final Path context = (Path) watchEvent.context();
-	    final Path resolvedPath = path.resolve(context);
-	    LOG.info("event kind: " + name + " context: " + resolvedPath);
+	    FileEvent event = new FileEventImpl(watchEvent, monitoredPath);
+	    LOG.info("got: " + event);
 	}
     }
 
