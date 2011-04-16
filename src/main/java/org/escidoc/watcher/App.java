@@ -8,9 +8,12 @@ import java.nio.file.StandardWatchEventKind;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.escidoc.watcher.domain.FileEvent;
+import org.escidoc.watcher.domain.Subscriber;
 import org.escidoc.watcher.domain.internal.FileEventImpl;
+import org.escidoc.watcher.domain.internal.StdLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +25,11 @@ public class App {
 
     private static Path monitoredPath;
 
+    private static List<Subscriber> subscriberList =
+        new ArrayList<Subscriber>();
+
     public static void main(final String... args) throws Exception {
+        subscribe();
         switch (args.length) {
             case 0:
                 useDefaultPath();
@@ -36,6 +43,11 @@ public class App {
             default:
                 LOG.error("One by one, Master...");
         }
+    }
+
+    private static void subscribe() {
+        subscriberList.add(new StdLogger());
+        subscriberList.add(new FileUploader());
     }
 
     private static void useDefaultPath() {
@@ -72,9 +84,13 @@ public class App {
 
     private static void processEvent(final WatchKey key) {
         for (final WatchEvent<?> watchEvent : key.pollEvents()) {
-            final FileEvent event =
-                new FileEventImpl(watchEvent, monitoredPath);
-            LOG.info("got: " + event);
+            broadcast(watchEvent);
+        }
+    }
+
+    private static void broadcast(final WatchEvent<?> watchEvent) {
+        for (final Subscriber s : subscriberList) {
+            s.consume(new FileEventImpl(watchEvent, monitoredPath));
         }
     }
 
