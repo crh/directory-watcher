@@ -16,7 +16,7 @@ import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
 
-public class ItemFoo {
+public class ItemBuilder {
 
     public static class Builder {
 

@@ -29,11 +29,12 @@ public class ItemUploader implements Consumer {
     public void consume(final FileEvent event) {
         if (event.getFileType().equals(FileType.FILE)) {
             try {
-                client.login(AppConstant.SERVICE_ADDRESS, AppConstant.SYSADMIN_LOGIN_NAME,
+                client.login(AppConstant.SERVICE_ADDRESS,
+                    AppConstant.SYSADMIN_LOGIN_NAME,
                     AppConstant.SYSADMIN_PASSWORD);
 
                 final Item created =
-                    client.create(new ItemFoo.Builder(new ContextRef(
+                    client.create(new ItemBuilder.Builder(new ContextRef(
                         "escidoc:10281"), new ContentModelRef("escidoc:3001"))
                         .build());
                 LOG.debug(created.getObjid());
