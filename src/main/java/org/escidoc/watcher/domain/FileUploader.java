@@ -2,6 +2,8 @@ package org.escidoc.watcher.domain;
 
 import java.nio.file.StandardWatchEventKind;
 
+import org.escidoc.watcher.domain.internal.ItemUploader;
+
 public class FileUploader implements Subscriber {
     private final Consumer consumer = new ItemUploader();
 
