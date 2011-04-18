@@ -1,7 +1,6 @@
-package org.escidoc.watcher;
+package org.escidoc.watcher.domain;
 
-import org.escidoc.watcher.domain.FileEvent;
-import org.escidoc.watcher.domain.FileType;
+import org.escidoc.watcher.AppConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +13,10 @@ import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
 
 public class ItemUploader implements Consumer {
+    private static final String CONTENT_MODEL_ID = "escidoc:3001";
+
+    private static final String ESCIDOC_10281 = "escidoc:10281";
+
     private static final Logger LOG = LoggerFactory
         .getLogger(ItemUploader.class);
 
@@ -35,7 +38,7 @@ public class ItemUploader implements Consumer {
 
                 final Item created =
                     client.create(new ItemBuilder.Builder(new ContextRef(
-                        "escidoc:10281"), new ContentModelRef("escidoc:3001"))
+                        ESCIDOC_10281), new ContentModelRef(CONTENT_MODEL_ID))
                         .build());
                 LOG.debug(created.getObjid());
             }

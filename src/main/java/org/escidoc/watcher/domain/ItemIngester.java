@@ -1,6 +1,5 @@
-package org.escidoc.watcher;
+package org.escidoc.watcher.domain;
 
-import org.escidoc.watcher.domain.FileEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

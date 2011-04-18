@@ -11,6 +11,7 @@ import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.escidoc.watcher.domain.FileUploader;
 import org.escidoc.watcher.domain.Subscriber;
 import org.escidoc.watcher.domain.internal.FileEventImpl;
 import org.escidoc.watcher.domain.internal.StdLogger;

@@ -1,6 +1,5 @@
-package org.escidoc.watcher;
+package org.escidoc.watcher.domain;
 
-import org.escidoc.watcher.domain.FileEvent;
 
 public interface Consumer {
 
