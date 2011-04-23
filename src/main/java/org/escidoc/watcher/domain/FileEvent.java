@@ -7,6 +7,8 @@ import org.joda.time.DateTime;
 
 public interface FileEvent {
 
+    Path getName();
+
     Kind<?> getKind();
 
     Path getFullPath();

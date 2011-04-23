@@ -16,6 +16,8 @@ public class FileEventImpl implements FileEvent {
 
     private final Path resolved;
 
+    private final Path context;
+
     public FileEventImpl(final WatchEvent<?> watchEvent,
         final Path monitoredPath) {
         Preconditions.checkNotNull(watchEvent, "watchEvent is null: %s",
@@ -23,7 +25,8 @@ public class FileEventImpl implements FileEvent {
         Preconditions.checkNotNull(monitoredPath, "monitoredPath is null: %s",
             monitoredPath);
         this.kind = watchEvent.kind();
-        this.resolved = monitoredPath.resolve((Path) watchEvent.context());
+        context = (Path) watchEvent.context();
+        this.resolved = monitoredPath.resolve(context);
     }
 
     @Override
@@ -88,5 +91,10 @@ public class FileEventImpl implements FileEvent {
     @Override
     public DateTime firedOn() {
         return new DateTime();
+    }
+
+    @Override
+    public Path getName() {
+        return context.getFileName();
     }
 }

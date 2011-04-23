@@ -3,7 +3,9 @@ package org.escidoc.watcher.domain.internal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 import org.escidoc.watcher.AppConstant;
@@ -30,10 +32,10 @@ import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
 
-public class ItemUploader implements Consumer {
+public class ItemCreator implements Consumer {
 
     private static final Logger LOG = LoggerFactory
-        .getLogger(ItemUploader.class);
+        .getLogger(ItemCreator.class);
 
     private final ItemHandlerClientInterface itemClient =
         new ItemHandlerClient(AppConstant.SERVICE_ADDRESS);
@@ -41,7 +43,7 @@ public class ItemUploader implements Consumer {
     private final StagingHandlerClientInterface stagingClient =
         new StagingHandlerClient(AppConstant.SERVICE_ADDRESS);
 
-    public ItemUploader() {
+    public ItemCreator() {
         itemClient.setTransport(TransportProtocol.REST);
         stagingClient.setTransport(TransportProtocol.REST);
     }
@@ -56,11 +58,20 @@ public class ItemUploader implements Consumer {
     private void tryCreateItem(final FileEvent event) {
         try {
             login();
-            final InputStream stream = loadFile(event);
-            final URL contentRef = putFileInStagingServer(stream);
-            final Item created = createItem(contentRef);
-            relesaseIt(created);
-            LOG.debug(created.getObjid());
+
+            String type =
+                URLConnection.guessContentTypeFromName(event
+                    .getFullPath().getFileName().getFileName().toString());
+            LOG.debug("mime/type guessed: " + type);
+
+            final Item newItem =
+                createItem(putFileInStagingServer(loadFile(event)), event
+                    .getFullPath().getFileName());
+            relesaseIt(newItem);
+
+            LOG
+                .debug("a new Item is created with an ID: "
+                    + newItem.getObjid());
         }
         catch (final EscidocClientException e) {
             LOG.error("Fail to create item with component. " + e);
@@ -78,7 +89,6 @@ public class ItemUploader implements Consumer {
         taskParam.setLastModificationDate(submit.getLastModificationDate());
 
         itemClient.release(created, taskParam);
-
     }
 
     private URL putFileInStagingServer(final InputStream stream)
@@ -94,12 +104,13 @@ public class ItemUploader implements Consumer {
 
     }
 
-    private Item createItem(final URL contentUrl) throws EscidocException,
-        InternalClientException, TransportException {
+    private Item createItem(final URL contentUrl, Path path)
+        throws EscidocException, InternalClientException, TransportException {
         final Item created =
             itemClient.create(new ItemBuilder.Builder(new ContextRef(
                 AppConstant.CONTEXT_ID), new ContentModelRef(
-                AppConstant.CONTENT_MODEL_ID)).withContent(contentUrl).build());
+                AppConstant.CONTENT_MODEL_ID))
+                .withContent(contentUrl).withName(path).build());
         return created;
     }
 

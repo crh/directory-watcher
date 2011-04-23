@@ -34,6 +34,7 @@ import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
+import de.escidoc.core.resources.om.item.StorageType;
 import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.om.item.component.ComponentContent;
 import de.escidoc.core.resources.om.item.component.ComponentProperties;
@@ -50,6 +51,15 @@ public class CreateItemTestWithOneComponent {
     private ItemHandlerClientInterface itemClient;
 
     private Authentication auth;
+
+    private final Components componentList = new Components();
+
+    private final Component component = new Component();
+
+    private final ComponentContent content = new ComponentContent();
+
+    private final ComponentProperties componentProperties =
+        new ComponentProperties();
 
     @Before
     public void init() throws Exception {
@@ -175,34 +185,25 @@ public class CreateItemTestWithOneComponent {
     }
 
     private void setComponents(final Item item, final URL contentRef) {
-        final Component component = new Component();
         setComponentProperties(component, contentRef);
         setComponentContent(component, contentRef);
-        final Components components = new Components();
-        components.add(component);
-        item.setComponents(components);
+        componentList.add(component);
+        item.setComponents(componentList);
     }
 
     private void setComponentContent(
         final Component component, final URL contentRef) {
-        final ComponentContent content = new ComponentContent();
         content.setXLinkHref(contentRef.toString());
-        content.setStorage("internal-managed");
+        content.setStorage(StorageType.INTERNAL_MANAGED);
         component.setContent(content);
     }
 
     private void setComponentProperties(
         final Component component, final URL contentRef) {
-        final ComponentProperties properties = new ComponentProperties();
-        properties.setDescription("Random content");
-        properties.setFileName(contentRef.getFile());
-        properties.setVisibility("public");
-        properties.setContentCategory("pre-print");
-
-        // properties.setContentCategory("content-category");
-        // properties.setMimeType("text/xml");
-        // properties.setValidStatus("valid");
-        // properties.setVisibility("insitutional");
-        component.setProperties(properties);
+        componentProperties.setDescription("Random content");
+        componentProperties.setFileName(contentRef.getFile());
+        componentProperties.setVisibility("public");
+        componentProperties.setContentCategory("pre-print");
+        component.setProperties(componentProperties);
     }
 }
