@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+package org.escidoc.watcher.domain;
+
+public interface Subscriber {
+
+    void consume(FileEvent event);
+
+}
+=======
+package org.escidoc.watcher.domain;
+
+public interface Subscriber {
+
+}
+>>>>>>> 4685afbdaa7d0c9f634dc22efab8d2776d72f9b9
