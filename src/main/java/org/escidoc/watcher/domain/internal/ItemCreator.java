@@ -58,7 +58,6 @@ public class ItemCreator implements Consumer {
     private void tryCreateItem(final FileEvent event) {
         try {
             login();
-
             String type =
                 URLConnection.guessContentTypeFromName(event
                     .getFullPath().getFileName().getFileName().toString());
