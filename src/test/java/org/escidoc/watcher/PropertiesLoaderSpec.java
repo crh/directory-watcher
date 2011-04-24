@@ -1,12 +1,14 @@
 package org.escidoc.watcher;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 import java.io.FileInputStream;
-import java.util.Map.Entry;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
-import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +20,9 @@ public class PropertiesLoaderSpec {
 
     private final Properties properties = new Properties();
 
-    @Test
-    public void itShouldCheckIfTheConfigFileExists() throws Exception {
+    @Before
+    public void setUp() throws FileNotFoundException, IOException {
         Properties props = System.getProperties();
-        Set<Entry<Object, Object>> entrySet = props.entrySet();
-        for (Entry<Object, Object> entry : entrySet) {
-            LOG.debug(entry.getKey() + ": " + entry.getValue());
-        }
-
-        // given
         String configFullPath =
             props.get("user.home") + props.getProperty("file.separator")
                 + ".escidoc" + props.getProperty("file.separator")
@@ -35,23 +31,28 @@ public class PropertiesLoaderSpec {
     }
 
     @Test
+    public void itShouldCheckIfTheConfigFileExists() throws Exception {
+    }
+
+    @Test
     public void itShouldLoadTheContentInToMemory() {
     }
 
     @Test
     public void itShouldContainsAllRequiredKeys() {
+
         String contextId = (String) properties.get("contextId");
-        String contentModelId = (String) properties.get("contentModelI");
-        String containerId = (String) properties.get("containerI");
+        String contentModelId = (String) properties.get("contentModelId");
+        String containerId = (String) properties.get("containerId");
         String escidocUri = (String) properties.get("escidocUri");
         String loginname = (String) properties.get("loginname");
         String password = (String) properties.get("password");
 
-        assertTrue(contextId != null);
-        assertTrue(contentModelId != null);
-        assertTrue(containerId != null);
-        assertTrue(escidocUri != null);
-        assertTrue(loginname != null);
-        assertTrue(password != null);
+        assertThat(contextId, notNullValue());
+        assertThat(contentModelId, notNullValue());
+        assertThat(containerId, notNullValue());
+        assertThat(escidocUri, notNullValue());
+        assertThat(loginname, notNullValue());
+        assertThat(password, notNullValue());
     }
 }
