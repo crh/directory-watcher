@@ -13,10 +13,13 @@ import java.util.List;
 
 import org.escidoc.watcher.domain.FileUploader;
 import org.escidoc.watcher.domain.Subscriber;
+import org.escidoc.watcher.domain.internal.AppConfig;
 import org.escidoc.watcher.domain.internal.FileEventImpl;
 import org.escidoc.watcher.domain.internal.StdLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Preconditions;
 
 public class App {
 
@@ -29,7 +32,10 @@ public class App {
     private static List<Subscriber> subscriberList =
         new ArrayList<Subscriber>();
 
+    private static AppConfig config;
+
     public static void main(final String... args) throws Exception {
+        config = new FileConfiguration();
         subscribe();
         switch (args.length) {
             case 0:
@@ -47,8 +53,9 @@ public class App {
     }
 
     private static void subscribe() {
+        Preconditions.checkNotNull(config, "config is null.");
         subscriberList.add(new StdLogger());
-        subscriberList.add(new FileUploader());
+        subscriberList.add(new FileUploader(config));
     }
 
     private static void useDefaultPath() {

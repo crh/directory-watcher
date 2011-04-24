@@ -8,13 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-import org.escidoc.watcher.AppConstant;
 import org.escidoc.watcher.domain.Consumer;
 import org.escidoc.watcher.domain.FileEvent;
 import org.escidoc.watcher.domain.FileType;
 import org.escidoc.watcher.domain.ItemBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Preconditions;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ItemHandlerClient;
@@ -37,13 +38,20 @@ public class ItemCreator implements Consumer {
     private static final Logger LOG = LoggerFactory
         .getLogger(ItemCreator.class);
 
-    private final ItemHandlerClientInterface itemClient =
-        new ItemHandlerClient(AppConstant.SERVICE_ADDRESS);
+    private final ItemHandlerClientInterface itemClient;
 
-    private final StagingHandlerClientInterface stagingClient =
-        new StagingHandlerClient(AppConstant.SERVICE_ADDRESS);
+    private final StagingHandlerClientInterface stagingClient;
 
-    public ItemCreator() {
+    private final String serviceAddress;
+
+    private final AppConfig config;
+
+    public ItemCreator(AppConfig config) {
+        Preconditions.checkNotNull(config, "config is null.");
+        this.config = config;
+        this.serviceAddress = config.getServiceAddress();
+        itemClient = new ItemHandlerClient(serviceAddress);
+        stagingClient = new StagingHandlerClient(serviceAddress);
         itemClient.setTransport(TransportProtocol.REST);
         stagingClient.setTransport(TransportProtocol.REST);
     }
@@ -106,17 +114,17 @@ public class ItemCreator implements Consumer {
     private Item createItem(final URL contentUrl, Path path)
         throws EscidocException, InternalClientException, TransportException {
         final Item created =
-            itemClient.create(new ItemBuilder.Builder(new ContextRef(
-                AppConstant.CONTEXT_ID), new ContentModelRef(
-                AppConstant.CONTENT_MODEL_ID))
+            itemClient.create(new ItemBuilder.Builder(new ContextRef(config
+                .getContextId()), new ContentModelRef(config
+                .getContentModelId()))
                 .withContent(contentUrl).withName(path).build());
         return created;
     }
 
     private void login() throws EscidocClientException {
         final Authentication authentication =
-            new Authentication(AppConstant.SERVICE_ADDRESS,
-                AppConstant.SYSADMIN_LOGIN_NAME, AppConstant.SYSADMIN_PASSWORD);
+            new Authentication(serviceAddress, config.getLoginName(),
+                config.getPassword());
         final String handle = authentication.getHandle();
         itemClient.setHandle(handle);
         stagingClient.setHandle(handle);

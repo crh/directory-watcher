@@ -2,12 +2,19 @@ package org.escidoc.watcher.domain;
 
 import java.nio.file.StandardWatchEventKind;
 
+import org.escidoc.watcher.domain.internal.AppConfig;
 import org.escidoc.watcher.domain.internal.ItemCreator;
 
-public class FileUploader implements Subscriber {
-    private final Consumer consumer = new ItemCreator();
+import com.google.common.base.Preconditions;
 
-    // private final Consumer consumer = new ItemIngester();
+public class FileUploader implements Subscriber {
+
+    private final Consumer consumer;
+
+    public FileUploader(AppConfig config) {
+        Preconditions.checkNotNull(config, "config is null.");
+        consumer = new ItemCreator(config);
+    }
 
     @Override
     public void consume(final FileEvent event) {
