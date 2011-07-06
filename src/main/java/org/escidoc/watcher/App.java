@@ -33,16 +33,21 @@ public class App {
 
   private static AppConfig config;
 
+  private static WatchService service;
+
   public static void main(final String... args) throws Exception {
     config = new FileConfiguration();
     subscribe();
     switch (args.length) {
       case 0:
         useDefaultPath();
-        break;
+        service = init();
+        for (;;) {
+          usingPull(service);
+        }
       case 1:
         monitoredPath = Paths.get(args[0]);
-        final WatchService service = init();
+        service = init();
         for (;;) {
           usingPull(service);
         }
