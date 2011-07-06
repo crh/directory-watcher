@@ -1,6 +1,6 @@
 package org.escidoc.watcher.domain;
 
-import java.nio.file.StandardWatchEventKind;
+import java.nio.file.StandardWatchEventKinds;
 
 import org.escidoc.watcher.domain.internal.AppConfig;
 import org.escidoc.watcher.domain.internal.ItemCreator;
@@ -18,7 +18,7 @@ public class FileUploader implements Subscriber {
 
     @Override
     public void consume(final FileEvent event) {
-        if (event.getKind().equals(StandardWatchEventKind.ENTRY_CREATE)) {
+        if (event.getKind().equals(StandardWatchEventKinds.ENTRY_CREATE)) {
             consumer.consume(event);
         }
     }

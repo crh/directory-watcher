@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKind;
+import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
@@ -32,10 +32,10 @@ public final class AppTest extends TestCase {
         WatchService service = FileSystems.getDefault().newWatchService();
 
         Path path = Paths.get(TO_MONITOR);
-        path.register(service, StandardWatchEventKind.ENTRY_CREATE,
-            StandardWatchEventKind.ENTRY_DELETE,
-            StandardWatchEventKind.ENTRY_MODIFY,
-            StandardWatchEventKind.OVERFLOW);
+        path.register(service, StandardWatchEventKinds.ENTRY_CREATE,
+            StandardWatchEventKinds.ENTRY_DELETE,
+            StandardWatchEventKinds.ENTRY_MODIFY,
+            StandardWatchEventKinds.OVERFLOW);
         for (;;) {
             WatchKey key = service.take();
             if (key.isValid()) {
