@@ -1,3 +1,10 @@
+${home.dir}.escidoc/escidocbox.properties
+    escidocUri=
+    loginname=
+    password=
+    contextId=
+    contentModelId=
+
 INBOX
     find out how to monitor file tree
         WatchService: monitor file tree only supported in Windows[1]
