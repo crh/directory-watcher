@@ -6,21 +6,21 @@ import org.escidoc.watcher.domain.Directory;
 
 public class DirectoryImpl implements Directory {
 
-    private final File file;
+  private final File file;
 
-    public DirectoryImpl(File file) {
-        if (notDirectory(file)) {
-            throw new RuntimeException(file.toString() + "is not a directory");
-        }
-        this.file = file;
+  public DirectoryImpl(File file) {
+    if (notDirectory(file)) {
+      throw new RuntimeException(file.toString() + "is not a directory");
     }
+    this.file = file;
+  }
 
-    private boolean notDirectory(File file) {
-        return !file.isDirectory();
-    }
+  private boolean notDirectory(File file) {
+    return !file.isDirectory();
+  }
 
-    public File getFile() {
-        return file;
-    }
+  public File getFile() {
+    return file;
+  }
 
 }

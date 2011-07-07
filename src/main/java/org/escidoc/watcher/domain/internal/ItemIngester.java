@@ -10,11 +10,11 @@ import de.escidoc.core.client.interfaces.IngestHandlerClientInterface;
 
 public class ItemIngester implements Consumer {
 
-    IngestHandlerClientInterface client = new IngestHandlerClient();
+  IngestHandlerClientInterface client = new IngestHandlerClient();
 
-    @Override
-    public void consume(final FileEvent event) {
-        throw new UncheckedTimeoutException("Ingest not yet implemented");
-    }
+  @Override
+  public void consume(final FileEvent event) {
+    throw new UncheckedTimeoutException("Ingest not yet implemented");
+  }
 
 }

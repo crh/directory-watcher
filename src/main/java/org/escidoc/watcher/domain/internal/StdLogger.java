@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class StdLogger implements Subscriber {
-    private static final Logger LOG = LoggerFactory.getLogger(StdLogger.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StdLogger.class);
 
-    @Override
-    public void consume(final FileEvent event) {
-        LOG.info("got: " + event);
-    }
+  @Override
+  public void consume(final FileEvent event) {
+    LOG.info("got: " + event);
+  }
 
 }

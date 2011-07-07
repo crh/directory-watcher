@@ -4,6 +4,6 @@ import java.io.File;
 
 public interface Directory {
 
-    File getFile();
+  File getFile();
 
 }

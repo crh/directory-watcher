@@ -15,44 +15,42 @@ import org.slf4j.LoggerFactory;
 
 public class PropertiesLoaderSpec {
 
-    private static final Logger LOG = LoggerFactory
-        .getLogger(PropertiesLoaderSpec.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PropertiesLoaderSpec.class);
 
-    private final Properties properties = new Properties();
+  private final Properties properties = new Properties();
 
-    @Before
-    public void setUp() throws FileNotFoundException, IOException {
-        Properties props = System.getProperties();
-        String configFullPath =
-            props.get("user.home") + props.getProperty("file.separator")
-                + ".escidoc" + props.getProperty("file.separator")
-                + "escidocbox.properties";
-        properties.load(new FileInputStream(configFullPath));
-    }
+  @Before
+  public void setUp() throws FileNotFoundException, IOException {
+    Properties props = System.getProperties();
+    String configFullPath = props.get("user.home")
+        + props.getProperty("file.separator") + ".escidoc"
+        + props.getProperty("file.separator") + "escidocbox.properties";
+    properties.load(new FileInputStream(configFullPath));
+  }
 
-    @Test
-    public void itShouldCheckIfTheConfigFileExists() throws Exception {
-    }
+  @Test
+  public void itShouldCheckIfTheConfigFileExists() throws Exception {
+  }
 
-    @Test
-    public void itShouldLoadTheContentInToMemory() {
-    }
+  @Test
+  public void itShouldLoadTheContentInToMemory() {
+  }
 
-    @Test
-    public void itShouldContainsAllRequiredKeys() {
+  @Test
+  public void itShouldContainsAllRequiredKeys() {
 
-        String contextId = (String) properties.get("contextId");
-        String contentModelId = (String) properties.get("contentModelId");
-        String containerId = (String) properties.get("containerId");
-        String escidocUri = (String) properties.get("escidocUri");
-        String loginname = (String) properties.get("loginname");
-        String password = (String) properties.get("password");
+    String contextId = (String) properties.get("contextId");
+    String contentModelId = (String) properties.get("contentModelId");
+    String containerId = (String) properties.get("containerId");
+    String escidocUri = (String) properties.get("escidocUri");
+    String loginname = (String) properties.get("loginname");
+    String password = (String) properties.get("password");
 
-        assertThat(contextId, notNullValue());
-        assertThat(contentModelId, notNullValue());
-        assertThat(containerId, notNullValue());
-        assertThat(escidocUri, notNullValue());
-        assertThat(loginname, notNullValue());
-        assertThat(password, notNullValue());
-    }
+    assertThat(contextId, notNullValue());
+    assertThat(contentModelId, notNullValue());
+    assertThat(containerId, notNullValue());
+    assertThat(escidocUri, notNullValue());
+    assertThat(loginname, notNullValue());
+    assertThat(password, notNullValue());
+  }
 }

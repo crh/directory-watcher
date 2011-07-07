@@ -2,14 +2,14 @@ package org.escidoc.watcher.domain.internal;
 
 public interface AppConfig {
 
-    String getServiceAddress();
+  String getServiceAddress();
 
-    String getLoginName();
+  String getLoginName();
 
-    String getPassword();
+  String getPassword();
 
-    String getContextId();
+  String getContextId();
 
-    String getContentModelId();
+  String getContentModelId();
 
 }

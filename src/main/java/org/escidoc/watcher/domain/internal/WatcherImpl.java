@@ -6,20 +6,20 @@ import org.escidoc.watcher.domain.Watcher;
 
 public class WatcherImpl implements Watcher {
 
-    private Directory dir;
+  private Directory dir;
 
-    private Subscriber subscriber;
+  private Subscriber subscriber;
 
-    public void watch(Directory dir) {
-        this.dir = dir;
-    }
+  public void watch(Directory dir) {
+    this.dir = dir;
+  }
 
-    public void setSubscriber(Subscriber subscriber) {
-        this.subscriber = subscriber;
-    }
+  public void setSubscriber(Subscriber subscriber) {
+    this.subscriber = subscriber;
+  }
 
-    public void start() {
-        // TODO Auto-generated method stub
-    }
+  public void start() {
+    // TODO Auto-generated method stub
+  }
 
 }

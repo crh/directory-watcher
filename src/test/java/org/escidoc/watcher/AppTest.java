@@ -22,49 +22,46 @@ import org.slf4j.LoggerFactory;
 
 public final class AppTest extends TestCase {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AppTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AppTest.class);
 
-    private static final String TO_MONITOR =
-        "/home/chh/projects/personal/directory-watcher/sync-me";
+  private static final String TO_MONITOR = "/home/chh/projects/personal/directory-watcher/sync-me";
 
-    @Test
-    public void testApp() throws IOException, InterruptedException {
-        WatchService service = FileSystems.getDefault().newWatchService();
+  @Test
+  public void testApp() throws IOException, InterruptedException {
+    WatchService service = FileSystems.getDefault().newWatchService();
 
-        Path path = Paths.get(TO_MONITOR);
-        path.register(service, StandardWatchEventKinds.ENTRY_CREATE,
-            StandardWatchEventKinds.ENTRY_DELETE,
-            StandardWatchEventKinds.ENTRY_MODIFY,
-            StandardWatchEventKinds.OVERFLOW);
-        for (;;) {
-            WatchKey key = service.take();
-            if (key.isValid()) {
-                List<WatchEvent<?>> eventList = key.pollEvents();
-                for (WatchEvent<?> watchEvent : eventList) {
-                    Kind<?> kind = watchEvent.kind();
-                    String name = kind.name();
-                    if (watchEvent.context() instanceof Path) {
-                        Path context = (Path) watchEvent.context();
-                        LOG.debug("event kind: " + name + " context: "
-                            + path.resolve(context));
+    Path path = Paths.get(TO_MONITOR);
+    path.register(service, StandardWatchEventKinds.ENTRY_CREATE,
+        StandardWatchEventKinds.ENTRY_DELETE,
+        StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.OVERFLOW);
+    for (;;) {
+      WatchKey key = service.take();
+      if (key.isValid()) {
+        List<WatchEvent<?>> eventList = key.pollEvents();
+        for (WatchEvent<?> watchEvent : eventList) {
+          Kind<?> kind = watchEvent.kind();
+          String name = kind.name();
+          if (watchEvent.context() instanceof Path) {
+            Path context = (Path) watchEvent.context();
+            LOG.debug("event kind: " + name + " context: "
+                + path.resolve(context));
 
-                        fireEvent(new FileEventImpl(watchEvent, path));
-                    }
-                }
-                if (!key.reset()) {
-                    LOG.warn("can not reset key.");
-                }
-            }
-            else {
-                LOG.warn("invalid: " + key);
-            }
+            fireEvent(new FileEventImpl(watchEvent, path));
+          }
         }
+        if (!key.reset()) {
+          LOG.warn("can not reset key.");
+        }
+      } else {
+        LOG.warn("invalid: " + key);
+      }
     }
+  }
 
-    private final List<FileEvent> list = new ArrayList<FileEvent>();
+  private final List<FileEvent> list = new ArrayList<FileEvent>();
 
-    private void fireEvent(FileEventImpl fileEvent) {
-        list.add(fileEvent);
-    }
+  private void fireEvent(FileEventImpl fileEvent) {
+    list.add(fileEvent);
+  }
 
 }

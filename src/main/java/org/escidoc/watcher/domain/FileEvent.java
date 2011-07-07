@@ -7,13 +7,13 @@ import org.joda.time.DateTime;
 
 public interface FileEvent {
 
-    Path getName();
+  Path getName();
 
-    Kind<?> getKind();
+  Kind<?> getKind();
 
-    Path getFullPath();
+  Path getFullPath();
 
-    FileType getFileType();
+  FileType getFileType();
 
-    DateTime firedOn();
+  DateTime firedOn();
 }
